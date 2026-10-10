@@ -35,6 +35,14 @@ class Config:
             port = os.getenv('MYSQL_PORT', '3306')
             name = os.getenv('MYSQL_DB', 'mahfooz_restaurant')
             return f'mysql+pymysql://{user}:{password}@{host}:{port}/{name}?charset=utf8mb4'
-        return 'sqlite:///' + str(BASE_DIR / 'mahfooz_restaurant.db')
+        bundled_db = BASE_DIR / 'mahfooz_restaurant.db'
+        if os.getenv('VERCEL'):
+            # Vercel's filesystem is read-only except /tmp, so copy the bundled SQLite DB there.
+            import shutil
+            tmp_db = Path('/tmp/mahfooz_restaurant.db')
+            if not tmp_db.exists() and bundled_db.exists():
+                shutil.copy(bundled_db, tmp_db)
+            return 'sqlite:///' + str(tmp_db)
+        return 'sqlite:///' + str(bundled_db)
 
     SQLALCHEMY_DATABASE_URI = database_uri.__func__()
