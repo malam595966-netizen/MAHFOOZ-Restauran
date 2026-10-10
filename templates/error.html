@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block title %}{{ code }} | MAHFOOZ{% endblock %}{% block content %}<section class="confirmation section"><p class="eyebrow">{{ code }} ERROR</p><h1>That’s not the <em>right turn.</em></h1><p>{{ message }}</p><a class="btn" href="{{ url_for('index') }}">Back to home ↗</a></section>{% endblock %}
