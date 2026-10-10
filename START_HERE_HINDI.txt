@@ -1,0 +1,19 @@
+MAHFOOZ RESTAURANT WEBSITE — START HERE
+
+1) ZIP ko extract karein. Folder ke andar app.py, config.py, models, templates, static aur mahfooz_restaurant.db hone chahiye.
+2) Windows par Python 3.10+ install karein: https://www.python.org/downloads/
+   Install karte waqt 'Add Python to PATH' select karein.
+3) Folder ke andar run.bat par double-click karein.
+4) Browser mein http://127.0.0.1:5000 kholein.
+5) Admin: http://127.0.0.1:5000/admin/login
+   Local demo username: admin
+   Local demo password: admin123
+
+Features: Home, menu search/filter, cart, checkout (COD/UPI on delivery), order tracking,
+table booking, contact form, admin dashboard, orders status, menu management, reservations, messages.
+
+IMPORTANT:
+- Is project mein real Razorpay online payment activate nahi hai. Checkout payment on delivery ke liye hai.
+- Public hosting se pehle .env.example ko .env banayein aur SECRET_KEY aur ADMIN_PASSWORD ko change karein.
+- Original .env file package mein jaan-boojhkar include nahi ki gayi hai kyunki usmein private keys ho sakti hain.
+- Agar Python ya package installation fail ho, error ka poora text/screenshot bhejein.
