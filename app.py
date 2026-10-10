@@ -9,7 +9,20 @@ from models import db, Admin, Category, FoodItem, Order, OrderItem, TableReserva
 
 app = Flask(__name__)
 app.config.from_object(Config)
+app.url_map.strict_slashes = False
 db.init_app(app)
+
+@app.before_request
+def normalize_path():
+    path = request.path
+    if len(path) > 1 and path.endswith('/'):
+        return redirect(path.rstrip('/') + (('?' + request.query_string.decode()) if request.query_string else ''), code=308)
+    lowered = path.lower()
+    aliases = {'/login': '/admin/login', '/admin.html': '/admin', '/dashboard': '/admin', '/admin/index': '/admin', '/admin/login.html': '/admin/login'}
+    if lowered in aliases:
+        return redirect(aliases[lowered], code=301)
+    if lowered != path and lowered.startswith('/admin'):
+        return redirect(lowered, code=301)
 
 # Lightweight schema migration: SQLAlchemy create_all does not add columns to existing tables.
 def migrate_schema():
