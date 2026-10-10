@@ -21,10 +21,13 @@ class Config:
 
     @staticmethod
     def database_uri():
-        explicit = os.getenv('DATABASE_URL')
+        explicit = os.getenv('DATABASE_URL') or os.getenv('POSTGRES_URL')
         if explicit:
-            if explicit.startswith('postgres://'):
-                explicit = explicit.replace('postgres://', 'postgresql://', 1)
+            # Pin the driver: SQLAlchemy 2.1+ defaults "postgresql://" to psycopg v3, but we ship psycopg2.
+            for prefix in ('postgres://', 'postgresql://'):
+                if explicit.startswith(prefix):
+                    explicit = 'postgresql+psycopg2://' + explicit[len(prefix):]
+                    break
             return explicit
         db_type = os.getenv('DB_TYPE', 'sqlite').lower()
         if db_type == 'mysql':
